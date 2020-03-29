@@ -25,7 +25,7 @@ export class APIService {
   }
 
   getUsers() {
-    this.http.get(`https://https://les5.glitch.me//users`).subscribe(data => {
+    this.http.get(`https://les5.glitch.me//users`).subscribe(data => {
       this._users = data;
       this.usersSubject.next(this._users);
     });
@@ -33,7 +33,7 @@ export class APIService {
 
   getNotes(userId) {
     this.selectedUserId = userId;
-    this.http.get(`https://https://les5.glitch.me//users/${this.selectedUserId}/notes`).subscribe(data => {
+    this.http.get(`https://les5.glitch.me//users/${this.selectedUserId}/notes`).subscribe(data => {
       this._notes = data;
       this.notesSubject.next(this._notes);
     });
@@ -42,7 +42,7 @@ export class APIService {
   
   addUser = (user) => {
     return this.http.post(
-      `https://https://les5.glitch.me//users`, 
+      `https://les5.glitch.me//users`, 
       {name: user},
       {headers: this.headers}
     );
@@ -50,7 +50,7 @@ export class APIService {
 
   addNote = (content) => {
     return this.http.post(
-      `https://https://les5.glitch.me//users/${this.selectedUserId}/notes`,
+      `https://les5.glitch.me//users/${this.selectedUserId}/notes`,
       {content: content},
       {headers: this.headers}
     );
@@ -58,7 +58,7 @@ export class APIService {
 
   deleteUser() {
     return this.http.delete(
-      `https://https://les5.glitch.me//users/${this.selectedUserId}`
+      `https://les5.glitch.me//users/${this.selectedUserId}`
     );
   }
 }

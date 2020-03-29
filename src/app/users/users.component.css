@@ -1,0 +1,6 @@
+.topbar-icon {
+    cursor: pointer;
+    display: inline-block;
+    margin: 30px 14px 0 14px;
+    width: unset;
+}

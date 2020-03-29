@@ -1,0 +1,16 @@
+<mat-card *ngFor="let note of notes; let i = index">
+    <mat-card-title>Notitie {{ i+1 }}</mat-card-title>
+    <mat-card-content>{{ note.content }}</mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="selectedUser != 0">
+    <mat-card-title>Notitie Toevoegen...</mat-card-title>
+    <mat-card-content>
+        <textarea matInput [(ngModel)]="contentNewNote" rows="4"></textarea>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="addNewNote()">Opslaan</button>
+    </mat-card-actions>
+</mat-card>
+
+<p *ngIf="selectedUser == 0">Geen notities beschikbaar...</p>

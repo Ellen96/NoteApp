@@ -1,0 +1,18 @@
+p {
+    margin: 10px;
+}
+
+mat-card {
+    float: left;
+    margin: 10px;
+    min-height: 150px;
+    width: calc(25% - 20px);
+}
+
+mat-card-content {
+    margin-bottom: 0;
+}
+
+mat-form-field {
+    width: -webkit-fill-available;
+}

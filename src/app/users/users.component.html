@@ -1,1 +1,9 @@
-<p>users works!</p>
+<mat-form-field>
+    <mat-select disableRipple [value]="selectedUser" (selectionChange)="getNotes($event.value)">
+        <mat-option [value]="0" selected>Gebruiker...</mat-option>
+        <mat-option *ngFor="let user of users" [value]="user.id">{{ user.name }}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<mat-icon class="topbar-icon" aria-hidden="false" (click)="addUser()">person_add</mat-icon>
+<mat-icon class="topbar-icon" aria-hidden="false" (click)="deleteUser()" *ngIf="selectedUser != 0">delete</mat-icon>

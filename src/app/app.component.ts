@@ -17,14 +17,5 @@ export class AppComponent {
   name : String;
   apiServiceT:APIService;
 
-  constructor(apiService:APIService)  {
-    apiService.getUsers().subscribe((data:User[])=>{
-    console.log(data);
-    this.usersList=data
-  })
-  }
-  addUser()
-  {
-    this.apiServiceT.addUsers(this.name).subscribe();
-  }
+  constructor(apiService:APIService)  {}
 }

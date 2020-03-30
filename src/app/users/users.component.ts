@@ -7,7 +7,7 @@ import { APIService } from '../api.service';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent {
-  selectedUser = 0;
+  selectedUser =0;
   public users: any;
 
   constructor(

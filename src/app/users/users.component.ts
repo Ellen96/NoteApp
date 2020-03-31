@@ -7,7 +7,8 @@ import { APIService } from '../api.service';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent {
-  selectedUser =0;
+  selectedUser=0;
+
   public users: any;
 
   constructor(
@@ -30,8 +31,8 @@ export class UsersComponent {
 
   deleteUser() {
     this.apiService.deleteUser().subscribe(data => {this.apiService.getUsers();}, error => {console.error(error);});
-
-    this.selectedUser = 0;
+    this.selectedUser =0;
     this.getNotes();
   }
+  
 }

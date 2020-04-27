@@ -10,9 +10,13 @@ mat-card {
 }
 
 mat-card-content {
-    margin-bottom: 0;
+    margin-bottom: 0;   
 }
 
 mat-form-field {
     width: -webkit-fill-available;
+}
+
+textarea{
+    height: auto;
 }

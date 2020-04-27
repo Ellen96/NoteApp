@@ -7,6 +7,9 @@ import { encode } from 'punycode';
   providedIn: 'root'
 })
 export class APIService {
+  private important : any;
+  private urgent : any;
+
   private _users:any = [];
   usersSubject: Subject<any> = new Subject<any>();
   Users = this.usersSubject.asObservable();
@@ -14,6 +17,13 @@ export class APIService {
   private _notes:any = [];
   notesSubject: Subject<any> = new Subject<any>();
   Notes = this.notesSubject.asObservable();
+
+  private _categorys: any = [
+    this.important,
+    this.urgent,
+  ];
+  categorysSubject: Subject<any> = new Subject<any>();
+  Categorys = this.categorysSubject.asObservable();
 
   selectedUser:any;
   
@@ -42,22 +52,33 @@ export class APIService {
 
   
   addUser = (user) => {
-    let encodeUri = encodeURI(`https://les5.glitch.me/add?name=`+user);
-    return this.http.get(encodeUri);
+    return this.http.post(`https://les5.glitch.me/users`,{name:user});
   }
 
-  addNote = (content) => {
-    let encodeUri = encodeURI(`https://les5.glitch.me/addnote?name=${this.selectedUser}&content=${content}`)
-    return this.http.get(encodeUri);
+  addNote = (content) => {    
+    return this.http.post(`https://les5.glitch.me/notes`,{name:this.selectedUser,content:content});
   }
+
+  addCategory=(category,noteId)=>{
+    return this.http.post(`https://les5.glitch.me/addCategory`,{name:this.selectedUser,id:noteId,category:category});
+  }
+
+  changeContent(content,noteId){
+    return this.http.post(`https://les5.glitch.me/changeContent`,{name:this.selectedUser,id:noteId,content:content});
+  }  
 
   deleteUser() {    
-    let encodeUri = encodeURI(`https://les5.glitch.me/remove?name=${this.selectedUser}`);
-    return this.http.get(encodeUri);    
+    let encodeUri = encodeURI(`https://les5.glitch.me/users?name=${this.selectedUser}`);
+    return this.http.delete(encodeUri);    
   }
 
   deleteNote(noteId){
-    let encodeUri = encodeURI(`https://les5.glitch.me/removeNote?name=${this.selectedUser}&id=${noteId}`);
-    return this.http.get(encodeUri);
+    let encodeUri = encodeURI(`https://les5.glitch.me/notes?name=${this.selectedUser}&id=${noteId}`);
+    return this.http.delete(encodeUri);
+  }
+
+  deleteAllNote(){
+    let encodeUri = encodeURI(`https://les5.glitch.me/AllNotes?name=${this.selectedUser}`);
+    return this.http.delete(encodeUri);
   }
 }

@@ -1,0 +1,6 @@
+.mat-select {
+    cursor: pointer;
+    display: inline;
+    margin: auto;
+    flex: 1 1 auto;
+}

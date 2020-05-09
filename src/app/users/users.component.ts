@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from '../api.service';
+import { FilterComponent} from '../filter/filter.component';
 
 @Component({
   selector: 'app-users',
@@ -10,18 +11,24 @@ export class UsersComponent {
   selectedUser=0;
 
   public users: any;
-
+  public filterdCategory:any;
   constructor(
-    public apiService: APIService
+    public apiService: APIService,
   ) { 
     apiService.Users.subscribe((users) => {
       this.users = users;
     });
+    this.filterdCategory=apiService.categoryFilter;
   }
 
   getNotes(userId = 0) {
     this.selectedUser = userId;
-    this.apiService.getNotes(this.selectedUser);
+    if(this.filterdCategory==0){
+      this.apiService.getNotes(this.selectedUser);
+    }
+    else{
+      this.apiService.getfilterCategory(this.filterdCategory,this.selectedUser);
+    }
   }
 
   addUser() {

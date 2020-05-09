@@ -1,0 +1,5 @@
+<mat-form-field>
+    {{appel}}
+        <textarea matInput placeholder="Geen search" [(ngModel)]="inputSearch" rows="1"></textarea>
+        <mat-icon class="topbar-icon" aria-hidden="false" (click)="search()">search</mat-icon>
+</mat-form-field>

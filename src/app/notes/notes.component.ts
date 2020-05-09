@@ -10,8 +10,13 @@ import { Content } from '@angular/compiler/src/render3/r3_ast';
 export class NotesComponent {
   public notes: any;
   public notesSize: number = 0;
+  public filterdNotes: any;
+  public filterdNotesSize: number = 0;
   public selectedUser: any;
-  public category:Text; 
+  public categoryFilter=0;
+  public categorys:any;
+  public categoryIdNote:any;
+  public selectedCategory=0; 
   public newNoteContent = "";
 
   constructor(
@@ -21,11 +26,19 @@ export class NotesComponent {
       this.notes = notes;
       this.notesSize = this.notes.length;
       this.selectedUser = this.apiService.selectedUser;
-      this.apiService.Categorys.subscribe((category)=>{
-        this.category=category;
-      });
     });
+    apiService.Categorys.subscribe((categorys)=>{
+      this.categorys=categorys;
+    });
+    this.categoryFilter=apiService.categoryFilter;
+    apiService.FilterdNotes.subscribe((filterdNotes)=>{
+      this.filterdNotes = filterdNotes;
+      this.filterdNotesSize = this.filterdNotes.length;
+    })
+
+    apiService.getCategorys();
   };
+
 
 
   saveNewNote() {
@@ -38,10 +51,27 @@ export class NotesComponent {
   deleteAllNotes(){
     this.apiService.deleteAllNote().subscribe(data =>{this.apiService.getNotes(this.selectedUser);},error =>{console.error(error);});
   }
-  addCategory(category,noteId){
-    this.apiService.addCategory(category,noteId).subscribe(data =>{this.apiService.getNotes(this.selectedUser);},error =>{console.error(error);});
-  }
+  
   changeContent(content,noteId){
     this.apiService.changeContent(content,noteId).subscribe(data =>{this.apiService.getNotes(this.selectedUser);},error =>{console.error(error);});
   }
+  addCategory(noteId){
+    let category = prompt("Geef de naam van de categorie in...");
+    this.apiService.addCategory(category).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+    this.apiService.addCategoryToNote(category,noteId).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+  }
+  addCategoryNote(category,noteId){
+    this.selectedCategory=category;
+    this.apiService.addCategoryToNote(category,noteId).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+  }
+  selectCategory(CategoryId){
+    return this.apiService.getCategory(CategoryId);
+  }
+  removeCategoryNote(noteId){
+    this.apiService.deleteCategoryNote(noteId).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+  }
+  removeCategory(categoryName){
+    this.apiService.deleteCategory(categoryName).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+  }
+  
 }

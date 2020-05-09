@@ -1,17 +1,29 @@
-<p *ngIf="selectedUser==0||selectedUser=== undefined ; else ASelectedUser ">Geen notities beschikbaar...</p>
+<p *ngIf="selectedUser==0||selectedUser=== undefined ; else ASelectedUser ">{{selectedUser}}Geen notities beschikbaar...</p>
 
 <ng-template #ASelectedUser>
-<mat-card *ngFor="let note of notes">
-    <mat-card-title>Category: {{ note.category}}</mat-card-title>
+    <p>{{categoryFilter}}</p>
+    <p *ngIf="categoryFilter==0; else AFilter">
+<mat-card *ngFor="let note of notes">    
+    <div>{{selectCategory(note.categoryId)}}</div>
+    <mat-card-title >
+        <mat-select disableRipple [value]="selectedCategory" (selectionChange)="addCategoryNote($event.value,note.id)"> 
+            <mat-option [value]="0">Geen category</mat-option>      
+            <mat-option *ngFor="let category of categorys" [value]="category.name">{{ category.name}}
+                <mat-icon class="topbar-icon" [style.Color]="'white'" (click)="removeCategory(category.name)">delete</mat-icon>
+            </mat-option>
+            <mat-icon class="topbar-icon" [style.Color]="'white'" (click)="addCategory(note.id)">add</mat-icon>
+            <mat-icon class="topbar-icon" [style.Color]="'white'" (click)="removeCategoryNote(note.id)">delete</mat-icon>         
+        </mat-select>
+    </mat-card-title>
     <mat-card-content>
         <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [(ngModel)]="note.content"></textarea>
-    </mat-card-content>
+    </mat-card-content> 
     <mat-card-actions>
         <button mat-button (click)="changeContent(note.content,note.id)">Opslaan</button>
+        <button mat-raised-button color="warn" (click)="deleteNote(note.id)">
+            <mat-icon class="topbar-icon" aria-hidden="false" *ngIf="selectedUser != 0">delete</mat-icon>
+        </button>
     </mat-card-actions>
-    <button mat-raised-button color="warn" (click)="deleteNote(note.id)">
-        <mat-icon class="topbar-icon" aria-hidden="false" *ngIf="selectedUser != 0">delete</mat-icon>
-    </button>
 </mat-card>
 <mat-card>
     <mat-card-title>Notitie Toevoegen...</mat-card-title>
@@ -25,6 +37,32 @@
         Delete all notes
     </button>
 </mat-card>
+    </p>
 </ng-template>
 
 
+<ng-template #AFilter>
+    Dit neemt hij dus mee.
+    <mat-card *ngFor="let filterdNote of filterdNotes">    
+        <mat-card-title >
+            {{categoryFilter}}
+        </mat-card-title>
+        <mat-card-content>
+            <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [value]="filterdNote.content"></textarea>
+        </mat-card-content> 
+    </mat-card>    
+</ng-template>
+
+
+
+<ng-template #Asearch>
+    Dit is Asearch die hij toont.
+    <mat-card *ngFor="let search of filterdNotes">    
+        <mat-card-title >
+            {{categoryFilter}}
+        </mat-card-title>
+        <mat-card-content>
+            <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [value]="filterdNotes.content"></textarea>
+        </mat-card-content> 
+    </mat-card>    
+</ng-template>

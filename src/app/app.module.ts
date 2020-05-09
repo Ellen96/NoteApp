@@ -11,6 +11,8 @@ import { UsersComponent } from './users/users.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotesComponent } from './notes/notes.component';
 import { TopbarComponent } from './topbar/topbar.component';
+import { FilterComponent } from './filter/filter.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { TopbarComponent } from './topbar/topbar.component';
     UsersComponent,
     NotesComponent,
     TopbarComponent,
+    FilterComponent,
+    SearchComponent,
     
   ],
   imports: [

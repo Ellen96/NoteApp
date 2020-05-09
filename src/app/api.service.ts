@@ -7,8 +7,7 @@ import { encode } from 'punycode';
   providedIn: 'root'
 })
 export class APIService {
-  private important : any;
-  private urgent : any;
+
 
   private _users:any = [];
   usersSubject: Subject<any> = new Subject<any>();
@@ -18,21 +17,31 @@ export class APIService {
   notesSubject: Subject<any> = new Subject<any>();
   Notes = this.notesSubject.asObservable();
 
-  private _categorys: any = [
-    this.important,
-    this.urgent,
-  ];
+  private _categorys: any = [];
   categorysSubject: Subject<any> = new Subject<any>();
   Categorys = this.categorysSubject.asObservable();
+  
+  private _filterdNotes:any = [];
+  filterdNotessSubject :Subject<any>=new Subject<any>();
+  FilterdNotes = this.filterdNotessSubject.asObservable();
+
+  private _searchNotes:any = [];
+  searchNotessSubject :Subject<any>=new Subject<any>();
+  searchNotes = this.searchNotessSubject.asObservable();
 
   selectedUser:any;
+  categoryFilter:any;
+  selectedCategory:any;
+  searchInput:any;
   
 
   constructor(
     private http: HttpClient
   ) {
     this.getUsers();
-  }
+    this.categoryFilter=0;
+    }
+
 
   getUsers() {
     return this.http.get(`https://les5.glitch.me/users`).subscribe(data => {
@@ -43,14 +52,40 @@ export class APIService {
 
   getNotes(user) {
     this.selectedUser=user;
-    let encodeUri=encodeURI(`https://les5.glitch.me/notes?name=${this.selectedUser}`);
-    return this.http.get(encodeUri).subscribe(data => {
+    return this.http.get(`https://les5.glitch.me/notes?name=${this.selectedUser}`).subscribe(data => {
       this._notes = data;
       this.notesSubject.next(this._notes);
     });
   }
 
-  
+  getCategorys(){
+    return this.http.get(`https://les5.glitch.me/categorys`).subscribe(data => {
+      this._categorys = data;
+      this.categorysSubject.next(this._categorys);
+  })     
+  }
+
+  getCategory(categoryId){
+    return this.http.get(`https://les5.glitch.me/categoryName?name=${this.selectedUser}&id=${categoryId}`);
+  }
+
+  getfilterCategory(categoryName,user){
+    this.categoryFilter=categoryName;
+    this.selectedUser=user;
+    return this.http.get(`https://les5.glitch.me/filter?name=${this.selectedUser}&category=${categoryName}`).subscribe(data => {
+      this._filterdNotes = data;
+      this.filterdNotessSubject.next(this._filterdNotes);
+    });
+  }
+
+  getSearch(search){
+    this.searchInput=search;
+    return this.http.get(`https://les5.glitch.me/search?name=${this.selectedUser}&search=${search}`).subscribe(data => {
+      this._searchNotes = data;
+      this.searchNotessSubject.next(this.searchNotes);
+    });
+  }
+
   addUser = (user) => {
     return this.http.post(`https://les5.glitch.me/users`,{name:user});
   }
@@ -59,8 +94,13 @@ export class APIService {
     return this.http.post(`https://les5.glitch.me/notes`,{name:this.selectedUser,content:content});
   }
 
-  addCategory=(category,noteId)=>{
-    return this.http.post(`https://les5.glitch.me/addCategory`,{name:this.selectedUser,id:noteId,category:category});
+  addCategory = (category) => {
+    this.categorysSubject.next(category);
+    return this.http.post(`https://les5.glitch.me/addCategory`,{category:category})
+  }
+
+  addCategoryToNote=(category,noteId)=>{
+    return this.http.post(`https://les5.glitch.me/addCategoryToNote`,{name:this.selectedUser,id:noteId,category:category});
   }
 
   changeContent(content,noteId){
@@ -81,4 +121,13 @@ export class APIService {
     let encodeUri = encodeURI(`https://les5.glitch.me/AllNotes?name=${this.selectedUser}`);
     return this.http.delete(encodeUri);
   }
+  deleteCategoryNote(noteId){
+    let encodeUri =encodeURI(`https://les5.glitch.me/removeCategoryFromNote?name=${this.selectedUser}&id=${noteId}`);
+    return this.http.delete(encodeUri);
+  }
+  deleteCategory(categoryName){
+    let encodeUri=encodeURI(`https://les5.glitch.me/removeCategory?name=${categoryName}`);
+    return this.http.delete(encodeUri);
+  }
+  
 }

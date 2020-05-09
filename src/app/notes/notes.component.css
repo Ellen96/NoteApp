@@ -9,6 +9,12 @@ mat-card {
     width: calc(25% - 20px);
 }
 
+mat-card-title{
+    color: ivory;
+    font-size: initial;
+}
+
+
 mat-card-content {
     margin-bottom: 0;   
 }

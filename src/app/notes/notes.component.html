@@ -1,4 +1,4 @@
-<p *ngIf="selectedUser==0||selectedUser=== undefined ; else ASelectedUser ">{{selectedUser}}Geen notities beschikbaar...</p>
+<p *ngIf="selectedUser==0||selectedUser=== undefined ; else ASelectedUser ">Geen notities beschikbaar...</p>
 
 <ng-template #ASelectedUser >
     <p *ngIf="(categoryFilter==0||categoryFilter===undefined)&&(this.searchInput==0||this.searchInput===undefined); else AFilter" >
@@ -14,7 +14,7 @@
         </mat-select>
     </mat-card-title>
     <mat-card-content>
-        <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [(ngModel)]="note.content"></textarea>
+        <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [(ngModel)]="note.content" (ngModelChange)="changeContent(note.content,note.id)"></textarea>
     </mat-card-content> 
     <mat-card-actions>
         <button mat-button (click)="changeContent(note.content,note.id)">Opslaan</button>
@@ -49,7 +49,7 @@
         <mat-card-title >
         </mat-card-title>
         <mat-card-content>
-            <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [value]="filterdNote.content"></textarea>
+            <textarea [style.backgroundColor]="'gray'" matInput [readonly]="true" cdkTextareaAutosize [value]="filterdNote.content"></textarea>
         </mat-card-content> 
     </mat-card>
 </p>    
@@ -61,7 +61,7 @@
         <mat-card-title >
         </mat-card-title>
         <mat-card-content>
-            <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [value]="search.content"></textarea>
+            <textarea [style.backgroundColor]="'gray'" matInput [readonly]="true" cdkTextareaAutosize [value]="search.content"></textarea>
         </mat-card-content> 
     </mat-card>    
 </ng-template>

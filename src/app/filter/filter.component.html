@@ -1,6 +1,6 @@
 <mat-form-field>
 <mat-select disableRipple [value]="categoryFilter" (selectionChange)="filterCategory($event.value)"> 
-    <mat-option [value]="0">selecteren...</mat-option>      
+    <mat-option [value]="0">All...</mat-option>      
     <mat-option *ngFor="let category of categorys" [value]="category.name">{{ category.name}}</mat-option>        
 </mat-select>
 </mat-form-field>

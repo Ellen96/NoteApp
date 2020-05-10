@@ -1,5 +1,5 @@
 <mat-form-field>
     {{appel}}
-        <textarea matInput placeholder="Geen search" [(ngModel)]="inputSearch" rows="1"></textarea>
+        <textarea [style.backgroundColor]="'violet'" matInput placeholder="zoeken..." [(ngModel)]="inputSearch" (ngModelChange)="search()" rows="1"></textarea>
         <mat-icon class="topbar-icon" aria-hidden="false" (click)="search()">search</mat-icon>
 </mat-form-field>

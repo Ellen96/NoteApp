@@ -20,12 +20,12 @@ public selectedUser;
   });
   apiService.getCategorys();
   this.selectedUser = apiService.selectedUser;
-  this.appel=apiService.categoryFilter;
+  
 };
 filterCategory(categoryName){
   this.categoryFilter=categoryName;
-  this.apiService.categoryFilter=this.categoryFilter;
-  this.apiService.getfilterCategory(categoryName,this.selectedUser);
+  this.apiService.categoryFilter=categoryName;
+  this.apiService.getfilterCategory(this.categoryFilter);
 }
 
 }

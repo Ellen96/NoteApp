@@ -1,10 +1,10 @@
 <p *ngIf="selectedUser==0||selectedUser=== undefined ; else ASelectedUser ">{{selectedUser}}Geen notities beschikbaar...</p>
 
-<ng-template #ASelectedUser>
-    <p>{{categoryFilter}}</p>
-    <p *ngIf="categoryFilter==0; else AFilter">
+<ng-template #ASelectedUser >
+    <div>{{categoryFilter}}</div>
+    <p *ngIf="(categoryFilter==0||categoryFilter===undefined)&&(this.searchInput==0||this.searchInput===undefined); else AFilter" >
 <mat-card *ngFor="let note of notes">    
-    <div>{{selectCategory(note.categoryId)}}</div>
+    <div>{{categoryName}}</div>
     <mat-card-title >
         <mat-select disableRipple [value]="selectedCategory" (selectionChange)="addCategoryNote($event.value,note.id)"> 
             <mat-option [value]="0">Geen category</mat-option>      
@@ -37,32 +37,41 @@
         Delete all notes
     </button>
 </mat-card>
-    </p>
+</p>
 </ng-template>
 
-
 <ng-template #AFilter>
+    <p *ngIf="(categoryFilter!=0&&categoryFilter!=undefined)&&(this.searchInput==0||this.searchInput===undefined);else ASearch">
     Dit neemt hij dus mee.
     <mat-card *ngFor="let filterdNote of filterdNotes">    
         <mat-card-title >
-            {{categoryFilter}}
         </mat-card-title>
         <mat-card-content>
             <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [value]="filterdNote.content"></textarea>
         </mat-card-content> 
+    </mat-card>
+</p>    
+</ng-template>
+
+<ng-template #ASearch>
+    <p *ngIf="(categoryFilter==0||categoryFilter===undefined)&&(this.searchInput!=0&&this.searchInput!=undefined);else FilterAndSearch"></p>
+    Dit is Asearch die hij toont.
+    <mat-card *ngFor="let search of searchNotes">    
+        <mat-card-title >
+        </mat-card-title>
+        <mat-card-content>
+            <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [value]="search.content"></textarea>
+        </mat-card-content> 
     </mat-card>    
 </ng-template>
 
-
-
-<ng-template #Asearch>
-    Dit is Asearch die hij toont.
-    <mat-card *ngFor="let search of filterdNotes">    
-        <mat-card-title >
-            {{categoryFilter}}
-        </mat-card-title>
-        <mat-card-content>
-            <textarea [style.backgroundColor]="'gray'" matInput cdkTextareaAutosize [value]="filterdNotes.content"></textarea>
-        </mat-card-content> 
-    </mat-card>    
+<ng-template #FilterAndSearch>
+<p *ngIf="(categoryFilter!=0&&categoryFilter!=undefined)||(this.searchInput!=0&&this.searchInput!=undefined); else Error">
+    You are using filter and search at the same time.
+    This is not possible.
+    Please clear one.
+</p>
+</ng-template>
+<ng-template #Error>
+    Error: we have noting to show.
 </ng-template>

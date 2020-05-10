@@ -18,6 +18,7 @@ export class SearchComponent {
   }
 
   search(){
+    this.apiService.searchInput=this.inputSearch
     this.apiService.getSearch(this.inputSearch)
   }
 

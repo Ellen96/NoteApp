@@ -1,6 +1,7 @@
 import { Component, OnInit,Input } from '@angular/core';
-import { APIService } from '../api.service';
 import { Content } from '@angular/compiler/src/render3/r3_ast';
+import { element } from 'protractor';
+import { APIService } from '../api.service';
 
 @Component({
   selector: 'app-notes',
@@ -12,10 +13,14 @@ export class NotesComponent {
   public notesSize: number = 0;
   public filterdNotes: any;
   public filterdNotesSize: number = 0;
+  public searchNotes: any;
+  public searchNotesSize: number = 0;
   public selectedUser: any;
-  public categoryFilter=0;
+  public categoryFilter:any;
+  public searchInput:any;
   public categorys:any;
   public categoryIdNote:any;
+  public categoryName:any;
   public selectedCategory=0; 
   public newNoteContent = "";
 
@@ -29,13 +34,18 @@ export class NotesComponent {
     });
     apiService.Categorys.subscribe((categorys)=>{
       this.categorys=categorys;
+
     });
-    this.categoryFilter=apiService.categoryFilter;
     apiService.FilterdNotes.subscribe((filterdNotes)=>{
       this.filterdNotes = filterdNotes;
       this.filterdNotesSize = this.filterdNotes.length;
+      this.categoryFilter=this.apiService.categoryFilter;
+    });
+    apiService.searchNotes.subscribe((searchNotes)=>{
+      this.searchNotes=searchNotes;
+      this.searchNotesSize=this.searchNotes.length;
+      this.searchInput=this.apiService.searchInput;
     })
-
     apiService.getCategorys();
   };
 
@@ -64,9 +74,7 @@ export class NotesComponent {
     this.selectedCategory=category;
     this.apiService.addCategoryToNote(category,noteId).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
   }
-  selectCategory(CategoryId){
-    return this.apiService.getCategory(CategoryId);
-  }
+
   removeCategoryNote(noteId){
     this.apiService.deleteCategoryNote(noteId).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
   }

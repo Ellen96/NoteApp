@@ -69,10 +69,9 @@ export class APIService {
     return this.http.get(`https://les5.glitch.me/categoryName?name=${this.selectedUser}&id=${categoryId}`);
   }
 
-  getfilterCategory(categoryName,user){
+  getfilterCategory(categoryName){
     this.categoryFilter=categoryName;
-    this.selectedUser=user;
-    return this.http.get(`https://les5.glitch.me/filter?name=${this.selectedUser}&category=${categoryName}`).subscribe(data => {
+    return this.http.get(`https://les5.glitch.me/filter?name=${this.selectedUser}&category=${this.categoryFilter}`).subscribe(data => {
       this._filterdNotes = data;
       this.filterdNotessSubject.next(this._filterdNotes);
     });
@@ -80,9 +79,9 @@ export class APIService {
 
   getSearch(search){
     this.searchInput=search;
-    return this.http.get(`https://les5.glitch.me/search?name=${this.selectedUser}&search=${search}`).subscribe(data => {
+    return this.http.get(`https://les5.glitch.me/search?name=${this.selectedUser}&search=${this.searchInput}`).subscribe(data => {
       this._searchNotes = data;
-      this.searchNotessSubject.next(this.searchNotes);
+      this.searchNotessSubject.next(this._searchNotes);
     });
   }
 

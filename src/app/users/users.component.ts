@@ -12,22 +12,33 @@ export class UsersComponent {
 
   public users: any;
   public filterdCategory:any;
+  public searchInput:any;
   constructor(
     public apiService: APIService,
   ) { 
     apiService.Users.subscribe((users) => {
       this.users = users;
     });
-    this.filterdCategory=apiService.categoryFilter;
   }
 
   getNotes(userId = 0) {
     this.selectedUser = userId;
-    if(this.filterdCategory==0){
+    this.filterdCategory=this.apiService.categoryFilter;
+    this.searchInput=this.apiService.searchInput;
+    if((this.filterdCategory==0||this.filterdCategory===undefined)&&(this.searchInput==0||this.searchInput===undefined)){
       this.apiService.getNotes(this.selectedUser);
     }
     else{
-      this.apiService.getfilterCategory(this.filterdCategory,this.selectedUser);
+      if((this.filterdCategory!=0&&this.filterdCategory!=undefined)&&(this.searchInput==0||this.searchInput===undefined)){
+        this.apiService.getfilterCategory(this.filterdCategory);
+      }
+      else{
+        if((this.filterdCategory==0||this.filterdCategory===undefined)&&(this.searchInput!=0&&this.searchInput!=undefined)){
+          this.apiService.getSearch(this.searchInput);
+        }
+        else{     
+        }
+      } 
     }
   }
 

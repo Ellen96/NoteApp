@@ -11,6 +11,7 @@ public categorys:any;
 public categoryFilter=0;
 public appel;
 public selectedUser;
+public searchInput: any;
 
   constructor(
   public apiService: APIService
@@ -19,12 +20,17 @@ public selectedUser;
     this.categorys=categorys;
   });
   apiService.getCategorys();
-  this.selectedUser = apiService.selectedUser;
+
   
 };
 filterCategory(categoryName){
   this.categoryFilter=categoryName;
   this.apiService.categoryFilter=categoryName;
+  this.searchInput=this.apiService.searchInput;
+  this.selectedUser = this.apiService.selectedUser;
+  if(this.categoryFilter==0||this.categoryFilter===undefined){
+    this.apiService.filterdNotessSubject.next('');
+  }
   this.apiService.getfilterCategory(this.categoryFilter);
 }
 

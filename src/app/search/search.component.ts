@@ -10,6 +10,8 @@ export class SearchComponent {
 
   public appel:any;
   public inputSearch:any;
+  categoryFilter: any;
+  selectedUser: any;
 
   constructor(
     public apiService: APIService,
@@ -18,8 +20,12 @@ export class SearchComponent {
   }
 
   search(){
-    this.apiService.searchInput=this.inputSearch
-    this.apiService.getSearch(this.inputSearch)
-  }
+    this.apiService.searchInput=this.inputSearch;
+    this.categoryFilter=this.apiService.categoryFilter;
+    this.selectedUser=this.apiService.selectedUser;
+    if(this.inputSearch==0||this.inputSearch===undefined)
+    { this.apiService.searchNotessSubject.next('')}
+    this.apiService.getSearch(this.inputSearch);
 
+  }
 }

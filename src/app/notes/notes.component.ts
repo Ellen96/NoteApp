@@ -19,14 +19,13 @@ export class NotesComponent {
   public categoryFilter:any;
   public searchInput:any;
   public categorys:any;
-  public categoryIdNote:any;
-  public categoryName:any;
-  public selectedCategory=0; 
   public newNoteContent = "";
+  public selectedCategory: any;
 
   constructor(
     public apiService: APIService
-  ) { 
+  ) {
+     
     apiService.Notes.subscribe((notes) => {
       this.notes = notes;
       this.notesSize = this.notes.length;
@@ -34,7 +33,6 @@ export class NotesComponent {
     });
     apiService.Categorys.subscribe((categorys)=>{
       this.categorys=categorys;
-
     });
     apiService.FilterdNotes.subscribe((filterdNotes)=>{
       this.filterdNotes = filterdNotes;
@@ -48,9 +46,7 @@ export class NotesComponent {
     })
     apiService.getCategorys();
   };
-
-
-
+  
   saveNewNote() {
     this.apiService.addNote(this.newNoteContent).subscribe(data => {this.apiService.getNotes(this.selectedUser);}, error => {console.error(error);});
     this.newNoteContent = "";
@@ -67,19 +63,20 @@ export class NotesComponent {
   }
   addCategory(noteId){
     let category = prompt("Geef de naam van de categorie in...");
+    this.selectedCategory=category;
     this.apiService.addCategory(category).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
-    this.apiService.addCategoryToNote(category,noteId).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+    this.apiService.addCategoryToNote(this.selectedCategory,noteId).subscribe(data =>{this.apiService.getNotes(this.selectedUser);},error =>{console.error(error);});
   }
   addCategoryNote(category,noteId){
     this.selectedCategory=category;
-    this.apiService.addCategoryToNote(category,noteId).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+    this.apiService.addCategoryToNote(this.selectedCategory,noteId).subscribe(data =>{this.apiService.getNotes(this.selectedUser);},error =>{console.error(error);});
   }
 
   removeCategoryNote(noteId){
-    this.apiService.deleteCategoryNote(noteId).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+    this.apiService.deleteCategoryNote(noteId).subscribe(data =>{this.apiService.getCategorys();this.apiService.getNotes(this.selectedUser);},error =>{console.error(error);});
   }
   removeCategory(categoryName){
-    this.apiService.deleteCategory(categoryName).subscribe(data =>{this.apiService.getCategorys();},error =>{console.error(error);});
+    this.apiService.deleteCategory(categoryName).subscribe(data =>{this.apiService.getCategorys();this.apiService.getNotes(this.selectedUser);},error =>{console.error(error);});
   }
   
 }

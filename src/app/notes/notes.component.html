@@ -1,15 +1,13 @@
 <p *ngIf="selectedUser==0||selectedUser=== undefined ; else ASelectedUser ">{{selectedUser}}Geen notities beschikbaar...</p>
 
 <ng-template #ASelectedUser >
-    <div>{{categoryFilter}}</div>
     <p *ngIf="(categoryFilter==0||categoryFilter===undefined)&&(this.searchInput==0||this.searchInput===undefined); else AFilter" >
 <mat-card *ngFor="let note of notes">    
-    <div>{{categoryName}}</div>
+    <div>{{note.name}}</div>
     <mat-card-title >
-        <mat-select disableRipple [value]="selectedCategory" (selectionChange)="addCategoryNote($event.value,note.id)"> 
+        <mat-select disableRipple [(value)]="note.selectedCategory" (selectionChange)="addCategoryNote($event.value,note.id)"> 
             <mat-option [value]="0">Geen category</mat-option>      
             <mat-option *ngFor="let category of categorys" [value]="category.name">{{ category.name}}
-                <mat-icon class="topbar-icon" [style.Color]="'white'" (click)="removeCategory(category.name)">delete</mat-icon>
             </mat-option>
             <mat-icon class="topbar-icon" [style.Color]="'white'" (click)="addCategory(note.id)">add</mat-icon>
             <mat-icon class="topbar-icon" [style.Color]="'white'" (click)="removeCategoryNote(note.id)">delete</mat-icon>         
@@ -26,7 +24,12 @@
     </mat-card-actions>
 </mat-card>
 <mat-card>
-    <mat-card-title>Notitie Toevoegen...</mat-card-title>
+    <mat-select>
+        <mat-option *ngFor="let category of categorys" [value]="category.name">{{ category.name}}
+            <mat-icon class="topbar-icon" [style.Color]="'white'" (click)="removeCategory(category.name)">delete</mat-icon>
+        </mat-option>
+    </mat-select>
+    <mat-card-title>Notitie Toevoegen...</mat-card-title>    
     <mat-card-content>
         <textarea [style.backgroundColor]="'gray'" matInput [(ngModel)]="newNoteContent" rows="4"></textarea>
     </mat-card-content>
@@ -42,7 +45,6 @@
 
 <ng-template #AFilter>
     <p *ngIf="(categoryFilter!=0&&categoryFilter!=undefined)&&(this.searchInput==0||this.searchInput===undefined);else ASearch">
-    Dit neemt hij dus mee.
     <mat-card *ngFor="let filterdNote of filterdNotes">    
         <mat-card-title >
         </mat-card-title>
@@ -55,7 +57,6 @@
 
 <ng-template #ASearch>
     <p *ngIf="(categoryFilter==0||categoryFilter===undefined)&&(this.searchInput!=0&&this.searchInput!=undefined);else FilterAndSearch"></p>
-    Dit is Asearch die hij toont.
     <mat-card *ngFor="let search of searchNotes">    
         <mat-card-title >
         </mat-card-title>

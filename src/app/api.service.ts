@@ -94,12 +94,13 @@ export class APIService {
   }
 
   addCategory = (category) => {
-    this.categorysSubject.next(category);
-    return this.http.post(`https://les5.glitch.me/addCategory`,{category:category})
+    this.selectedCategory=category;
+    return this.http.post(`https://les5.glitch.me/addCategory`,{category:this.selectedCategory});
   }
 
   addCategoryToNote=(category,noteId)=>{
-    return this.http.post(`https://les5.glitch.me/addCategoryToNote`,{name:this.selectedUser,id:noteId,category:category});
+    this.selectedCategory=category;
+    return this.http.post(`https://les5.glitch.me/addCategoryToNote`,{name:this.selectedUser,id:noteId,category:this.selectedCategory});
   }
 
   changeContent(content,noteId){
